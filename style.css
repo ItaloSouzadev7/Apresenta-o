@@ -738,1069 +738,864 @@ select.form-control {
 }
 
 /* END PERPLEXITY DESIGN SYSTEM */
-/* Presentation-specific styles */
+/* Custom styles for the presentation */
+
 .presentation-container {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  background: var(--color-background);
-  font-family: var(--font-family-base);
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: var(--color-background);
 }
 
-/* Progress Bar */
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: rgba(var(--color-teal-500-rgb), 0.2);
-  z-index: 1000;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-teal-400));
-  width: 9.09%; /* 1/11 slides */
-  transition: width var(--duration-normal) var(--ease-standard);
-}
-
-/* Slide Counter */
-.slide-counter {
-  position: fixed;
-  top: var(--space-16);
-  right: var(--space-24);
-  background: var(--color-surface);
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  z-index: 1000;
-}
-
-/* Slide Base Styles */
 .slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateX(100px);
-  transition: all var(--duration-normal) var(--ease-standard);
-  padding: var(--space-32);
-  box-sizing: border-box;
+    display: none;
+    width: 100%;
+    height: 100vh;
+    padding: var(--space-32);
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-standard);
 }
 
 .slide.active {
-  opacity: 1;
-  transform: translateX(0);
+    display: flex;
+    opacity: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .slide-content {
-  max-width: 1200px;
-  width: 100%;
-  text-align: center;
+    max-width: 1200px;
+    width: 100%;
+    text-align: center;
 }
 
-/* Typography for presentations */
-.slide h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: var(--space-24);
-  color: var(--color-text);
+.slide-header {
+    margin-bottom: var(--space-32);
 }
 
-.slide h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: var(--space-16);
-  color: var(--color-primary);
+.slide-header h1 {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-16);
+    line-height: var(--line-height-tight);
 }
 
-.slide h3 {
-  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-  margin-bottom: var(--space-16);
-  color: var(--color-text);
+.slide-header h1.highlight {
+    color: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-teal-300));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.slide p {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.6;
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-16);
+.slide-header h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--space-16);
 }
 
-.slide-subtitle {
-  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
-  margin-bottom: var(--space-32);
+.slide-header h3.subtitle {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-24);
 }
 
-/* Slide 1: Hero Section */
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-24);
+.slide-body {
+    margin-top: var(--space-24);
 }
 
-.main-title {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-teal-400));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: var(--font-weight-bold);
+/* Slide 1 - Abertura */
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-32);
+    margin: var(--space-32) 0;
+    font-size: 80px;
 }
 
-.subtitle {
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  color: var(--color-text);
-  font-weight: var(--font-weight-medium);
+.arrow {
+    color: var(--color-primary);
+    font-weight: bold;
+    font-size: 60px;
 }
 
-.hero-icons {
-  display: flex;
-  gap: var(--space-24);
-  margin: var(--space-16) 0;
+.tagline {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-32);
 }
 
-.hero-icon {
-  font-size: 3.5rem;
-  opacity: 0.9;
-  animation: float 3s ease-in-out infinite;
-}
-
-.hero-icon:nth-child(2) {
-  animation-delay: -1s;
-}
-
-.hero-icon:nth-child(3) {
-  animation-delay: -2s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-.hero-description {
-  max-width: 700px;
-  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-  color: var(--color-text-secondary);
-}
-
-/* Slide 2: Trends Grid */
-.trends-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--space-24);
-  margin-top: var(--space-32);
-}
-
-.trend-card {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  transition: all var(--duration-normal) var(--ease-standard);
-  position: relative;
-  overflow: hidden;
-}
-
-.trend-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: var(--color-primary);
-}
-
-.trend-card.primary::before {
-  background: linear-gradient(90deg, var(--color-primary), var(--color-teal-400));
-}
-
-.trend-card.success::before {
-  background: linear-gradient(90deg, var(--color-success), var(--color-teal-300));
-}
-
-.trend-card.warning::before {
-  background: linear-gradient(90deg, var(--color-warning), var(--color-orange-400));
-}
-
-.trend-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary);
-}
-
-.trend-icon {
-  font-size: 2.5rem;
-  margin-bottom: var(--space-16);
-}
-
-.market-insight {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-1);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-primary);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Slide 3: I.A. Benefits */
-.ia-benefits {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-32);
-  margin: var(--space-32) 0;
-}
-
-.benefit-highlight {
-  background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-3));
-  padding: var(--space-32);
-  border-radius: var(--radius-lg);
-  border: 2px solid rgba(var(--color-primary-rgb, 33, 128, 141), 0.3);
-  text-align: center;
-  box-shadow: var(--shadow-md);
-}
-
-.benefit-number {
-  font-size: clamp(3rem, 6vw, 5rem);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-16);
-  display: block;
-}
-
-.automation-areas {
-  margin-top: var(--space-32);
-  text-align: left;
-}
-
-.automation-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-16);
-  margin-top: var(--space-20);
+/* Slide 2 - Base Digital */
+.automation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-20);
+    margin-top: var(--space-32);
 }
 
 .automation-item {
-  background: var(--color-surface);
-  padding: var(--space-16);
-  border-radius: var(--radius-base);
-  border: 1px solid var(--color-border);
-  font-weight: var(--font-weight-medium);
-  transition: all var(--duration-fast) var(--ease-standard);
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: center;
+    transition: transform var(--duration-fast) var(--ease-standard);
 }
 
 .automation-item:hover {
-  background: var(--color-bg-1);
-  border-color: var(--color-primary);
-  transform: translateX(4px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
-/* Slide 4: Scientific Data */
-.scientific-data {
-  max-width: 1000px;
-  margin: 0 auto;
+.automation-item .icon {
+    font-size: 48px;
+    margin-bottom: var(--space-16);
 }
 
-.research-highlight {
-  background: var(--color-bg-1);
-  padding: var(--space-32);
-  border-radius: var(--radius-lg);
-  border: 2px solid rgba(var(--color-primary-rgb, 33, 128, 141), 0.3);
-  margin-bottom: var(--space-32);
+.automation-item h4 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-8);
+    color: var(--color-text);
 }
 
-.research-source {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-20);
+.automation-item p {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
 }
 
-.research-results {
-  display: flex;
-  gap: var(--space-32);
-  justify-content: center;
-  flex-wrap: wrap;
+/* Slide 3 - Oportunidades */
+.expansion-opportunities {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-20);
+    margin-top: var(--space-32);
 }
 
-.result-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-8);
+.opportunity-card {
+    background: var(--color-bg-3);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: center;
 }
 
-.result-number {
-  font-size: 2.5rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-success);
+.opportunity-card .card-header h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-12);
+    color: var(--color-text);
 }
 
-.result-text {
-  font-size: var(--font-size-base);
-  color: var(--color-text);
-  text-align: center;
+.opportunity-card p {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
 }
 
-.benefits-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-20);
+/* Slide 4 - Múltiplas Telas */
+.productivity-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-24);
+    margin-bottom: var(--space-32);
+    flex-wrap: wrap;
 }
 
-.benefit-card {
-  background: var(--color-surface);
-  padding: var(--space-20);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  text-align: center;
-  transition: all var(--duration-normal) var(--ease-standard);
+.stat-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    min-width: 200px;
+    text-align: center;
 }
 
-.benefit-card:hover {
-  transform: scale(1.05);
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
+.stat-card.primary {
+    background: var(--color-bg-1);
+    border-color: var(--color-primary);
 }
 
-.benefit-icon {
-  font-size: 2rem;
-  margin-bottom: var(--space-12);
+.stat-card.success {
+    background: var(--color-bg-3);
+    border-color: var(--color-success);
 }
 
-.benefit-stat {
-  font-size: 2rem;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-8);
+.stat-card.info {
+    background: var(--color-bg-8);
+    border-color: var(--color-info);
 }
 
-.science-conclusion {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-3);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-success);
+.stat-number {
+    font-size: 48px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    line-height: 1;
 }
 
-/* Slide 5: Departments Automation */
-.departments-automation {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: var(--space-24);
-  margin-top: var(--space-32);
-}
-
-.dept-automation {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.dept-automation:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary);
-}
-
-.dept-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-16);
-  margin-bottom: var(--space-20);
-}
-
-.dept-icon {
-  font-size: 2rem;
-}
-
-.automation-opportunities {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-
-.opportunity {
-  padding: var(--space-12) var(--space-16);
-  background: var(--color-bg-1);
-  border-radius: var(--radius-base);
-  border-left: 3px solid var(--color-primary);
-  font-weight: var(--font-weight-medium);
-}
-
-.opportunity-insight {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-2);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-warning);
-}
-
-/* Slide 6: Success Cases */
-.success-cases {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: var(--space-24);
-  margin-top: var(--space-32);
-}
-
-.case-card {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  transition: all var(--duration-normal) var(--ease-standard);
-  text-align: left;
-}
-
-.case-card.featured {
-  border-color: rgba(var(--color-primary-rgb, 33, 128, 141), 0.4);
-  box-shadow: var(--shadow-md);
-}
-
-.case-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-}
-
-.case-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: var(--space-20);
-  flex-wrap: wrap;
-  gap: var(--space-12);
-}
-
-.case-badge {
-  padding: var(--space-6) var(--space-12);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-}
-
-.case-badge.success {
-  background: rgba(var(--color-success-rgb), 0.15);
-  color: var(--color-success);
-  border: 1px solid rgba(var(--color-success-rgb), 0.25);
-}
-
-.case-badge.growth {
-  background: var(--color-bg-2);
-  color: var(--color-warning);
-  border: 1px solid rgba(var(--color-warning-rgb), 0.25);
-}
-
-.case-badge.innovation {
-  background: var(--color-bg-5);
-  color: var(--color-primary);
-  border: 1px solid rgba(var(--color-primary-rgb, 33, 128, 141), 0.25);
-}
-
-.case-metrics {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-}
-
-.metric {
-  display: flex;
-  gap: var(--space-8);
-  align-items: flex-start;
-}
-
-.metric-label {
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-  min-width: 80px;
-}
-
-.metric-value {
-  color: var(--color-text-secondary);
-  flex: 1;
-}
-
-.cases-insight {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-1);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-primary);
-}
-
-/* Slide 7: Wellness Benefits */
-.wellness-benefits {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-24);
-  margin: var(--space-32) 0;
-}
-
-.wellness-card {
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.wellness-card.primary {
-  background: var(--color-bg-1);
-  border-color: rgba(var(--color-primary-rgb, 33, 128, 141), 0.3);
-}
-
-.wellness-card.success {
-  background: var(--color-bg-3);
-  border-color: rgba(var(--color-success-rgb), 0.3);
-}
-
-.wellness-card.info {
-  background: var(--color-bg-8);
-  border-color: rgba(var(--color-info-rgb), 0.3);
-}
-
-.wellness-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.wellness-icon {
-  font-size: 2.5rem;
-  margin-bottom: var(--space-16);
-}
-
-.ergonomic-solutions {
-  margin-top: var(--space-32);
-  text-align: left;
-}
-
-.solutions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-16);
-  margin-top: var(--space-20);
-}
-
-.solution-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  padding: var(--space-16);
-  background: var(--color-surface);
-  border-radius: var(--radius-base);
-  border: 1px solid var(--color-border);
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.solution-item:hover {
-  background: var(--color-bg-1);
-  border-color: var(--color-primary);
-}
-
-.solution-icon {
-  font-size: 1.5rem;
-}
-
-.wellness-conclusion {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-3);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-success);
-}
-
-/* Slide 8: Tech Categories */
-.tech-categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: var(--space-32);
-  margin-top: var(--space-32);
-}
-
-.tech-category {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  text-align: left;
-}
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--space-12);
-  margin-top: var(--space-16);
-}
-
-.tool-card {
-  background: var(--color-bg-1);
-  padding: var(--space-12) var(--space-16);
-  border-radius: var(--radius-base);
-  font-weight: var(--font-weight-medium);
-  border: 1px solid rgba(var(--color-primary-rgb, 33, 128, 141), 0.2);
-  text-align: center;
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.tool-card:hover {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  transform: scale(1.05);
-}
-
-.tech-advantage {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-5);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-primary);
-}
-
-/* Slide 9: ROI Metrics */
-.roi-metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-24);
-  margin: var(--space-32) 0;
-}
-
-.roi-card {
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  text-align: center;
-  transition: all var(--duration-normal) var(--ease-standard);
-}
-
-.roi-card.operational {
-  background: var(--color-bg-2);
-  border-color: rgba(var(--color-warning-rgb), 0.3);
-}
-
-.roi-card.revenue {
-  background: var(--color-bg-3);
-  border-color: rgba(var(--color-success-rgb), 0.3);
-}
-
-.roi-card.productivity {
-  background: var(--color-bg-1);
-  border-color: rgba(var(--color-primary-rgb, 33, 128, 141), 0.3);
-}
-
-.roi-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-}
-
-.roi-icon {
-  font-size: 2.5rem;
-  margin-bottom: var(--space-16);
-}
-
-.roi-value {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary);
-  margin-bottom: var(--space-12);
-}
-
-.roi-benefits {
-  margin-top: var(--space-32);
-  text-align: left;
+.stat-label {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-8);
 }
 
 .benefits-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
-  margin-top: var(--space-16);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .benefit-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  padding: var(--space-12);
-  background: var(--color-surface);
-  border-radius: var(--radius-base);
-  border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-16);
+    font-size: var(--font-size-lg);
+    text-align: left;
 }
 
-.benefit-check {
-  color: var(--color-success);
-  font-weight: var(--font-weight-bold);
-  font-size: 1.2rem;
+.check {
+    font-size: var(--font-size-xl);
+    color: var(--color-success);
 }
 
-.roi-conclusion {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-3);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-success);
+/* Slide 5 - Cases */
+.case-studies {
+    display: flex;
+    gap: var(--space-24);
+    justify-content: center;
+    margin-top: var(--space-32);
+    flex-wrap: wrap;
 }
 
-/* Slide 10: Implementation Timeline */
-.implementation-timeline {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-24);
-  margin-top: var(--space-32);
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+.case-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    max-width: 400px;
+    text-align: left;
 }
 
-.timeline-phase {
-  display: flex;
-  gap: var(--space-24);
-  align-items: flex-start;
+.case-card.featured {
+    background: var(--color-bg-1);
+    border-color: var(--color-primary);
 }
 
-.phase-period {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  padding: var(--space-12) var(--space-20);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-semibold);
-  min-width: 100px;
-  text-align: center;
-  flex-shrink: 0;
+.case-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-16);
 }
 
-.phase-content {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  flex: 1;
-  text-align: left;
+.case-header h4 {
+    font-size: var(--font-size-xl);
+    color: var(--color-text);
+    margin: 0;
 }
 
-.phase-content ul {
-  margin-top: var(--space-12);
-  padding-left: var(--space-20);
+.case-badge {
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
 }
 
-.phase-content li {
-  margin-bottom: var(--space-6);
-  color: var(--color-text-secondary);
+.case-badge.economy {
+    background: var(--color-success);
 }
 
-.implementation-note {
-  margin-top: var(--space-32);
-  padding: var(--space-24);
-  background: var(--color-bg-3);
-  border-radius: var(--radius-lg);
-  border-left: 4px solid var(--color-success);
+.case-content p {
+    margin-bottom: var(--space-12);
+    font-size: var(--font-size-md);
 }
 
-/* Slide 11: Action Steps */
-.action-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-24);
-  margin-top: var(--space-32);
+.case-content p:last-child {
+    margin-bottom: 0;
 }
 
-.step-phase {
-  background: var(--color-surface);
-  padding: var(--space-24);
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-border);
-  text-align: left;
-  transition: all var(--duration-normal) var(--ease-standard);
+/* Slide 6 - Ferramentas */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-32);
 }
 
-.step-phase.immediate {
-  border-color: var(--color-error);
-  background: var(--color-bg-4);
+.tool-category {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: left;
 }
 
-.step-phase.short-term {
-  border-color: var(--color-warning);
-  background: var(--color-bg-2);
+.tool-category h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-16);
+    color: var(--color-text);
 }
 
-.step-phase.long-term {
-  border-color: var(--color-success);
-  background: var(--color-bg-3);
+.tool-category ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.step-phase:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.tool-category li {
+    margin-bottom: var(--space-8);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-20);
+    position: relative;
 }
 
-.step-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-16);
-  margin-bottom: var(--space-16);
+.tool-category li:before {
+    content: "•";
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+    position: absolute;
+    left: 0;
+    top: -2px;
 }
 
-.step-icon {
-  font-size: 2rem;
+/* Slide 7 - Ergonomia */
+.ergonomia-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-20);
+    margin-bottom: var(--space-32);
 }
 
-.step-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-12);
+.ergonomia-card {
+    background: var(--color-bg-5);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    text-align: center;
 }
 
-.action-item {
-  padding: var(--space-12) var(--space-16);
-  background: var(--color-surface);
-  border-radius: var(--radius-base);
-  border-left: 3px solid var(--color-primary);
-  font-weight: var(--font-weight-medium);
+.ergonomia-card h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-12);
+    color: var(--color-text);
 }
 
-.transformation-call {
-  margin-top: var(--space-32);
-  padding: var(--space-32);
-  background: linear-gradient(135deg, var(--color-bg-1), var(--color-bg-3));
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--color-primary);
-  box-shadow: var(--shadow-lg);
+.ergonomia-card p {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
 }
 
-.call-content {
-  max-width: 600px;
-  margin: 0 auto;
+.equipment-list {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: center;
 }
 
-.success-formula {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-12);
-  margin-top: var(--space-20);
-  flex-wrap: wrap;
+.equipment-list h4 {
+    margin-bottom: var(--space-16);
+    color: var(--color-text);
 }
 
-.formula-part {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-semibold);
+.equipment-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    justify-content: center;
 }
 
-.formula-plus, .formula-equals {
-  color: var(--color-primary);
-  font-weight: var(--font-weight-bold);
-  font-size: 1.2rem;
+.equipment-tag {
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
 }
 
-.formula-result {
-  background: var(--color-success);
-  color: var(--color-btn-primary-text);
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-full);
-  font-weight: var(--font-weight-semibold);
+/* Slide 8 - ROI */
+.roi-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-24);
+    margin-bottom: var(--space-32);
+    flex-wrap: wrap;
+}
+
+.roi-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    min-width: 200px;
+    text-align: center;
+}
+
+.roi-card.primary {
+    background: var(--color-bg-1);
+    border-color: var(--color-primary);
+}
+
+.roi-card.success {
+    background: var(--color-bg-3);
+    border-color: var(--color-success);
+}
+
+.roi-card.info {
+    background: var(--color-bg-8);
+    border-color: var(--color-info);
+}
+
+.roi-number {
+    font-size: 54px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    line-height: 1;
+}
+
+.roi-label {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-top: var(--space-8);
+}
+
+.roi-benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-24);
+}
+
+.benefit-column {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: left;
+}
+
+.benefit-column h4 {
+    margin-bottom: var(--space-16);
+    color: var(--color-text);
+}
+
+.benefit-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.benefit-column li {
+    margin-bottom: var(--space-8);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-20);
+    position: relative;
+}
+
+.benefit-column li:before {
+    content: "✓";
+    color: var(--color-success);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Slide 9 - Timeline */
+.timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: var(--space-32);
+}
+
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-24);
+    margin-bottom: var(--space-32);
+    text-align: left;
+}
+
+.timeline-marker {
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+}
+
+.timeline-content {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    flex: 1;
+}
+
+.timeline-content h4 {
+    margin-bottom: var(--space-12);
+    color: var(--color-text);
+}
+
+.timeline-content p {
+    margin-bottom: var(--space-8);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.timeline-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Slide 10 - Benefícios */
+.benefits-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-32);
+}
+
+.benefit-pillar {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: center;
+}
+
+.pillar-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-16);
+}
+
+.benefit-pillar h4 {
+    margin-bottom: var(--space-16);
+    color: var(--color-text);
+}
+
+.benefit-pillar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+.benefit-pillar li {
+    margin-bottom: var(--space-8);
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    padding-left: var(--space-20);
+    position: relative;
+}
+
+.benefit-pillar li:before {
+    content: "•";
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+    position: absolute;
+    left: 0;
+}
+
+/* Slide 11 - Compromisso */
+.commitment-goals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-20);
+    margin-bottom: var(--space-32);
+}
+
+.goal-card {
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    text-align: center;
+}
+
+.goal-card.immediate {
+    background: var(--color-bg-4);
+    border-color: var(--color-error);
+}
+
+.goal-card.short-term {
+    background: var(--color-bg-2);
+    border-color: var(--color-warning);
+}
+
+.goal-card.long-term {
+    background: var(--color-bg-3);
+    border-color: var(--color-success);
+}
+
+.goal-card h4 {
+    margin-bottom: var(--space-12);
+    color: var(--color-text);
+}
+
+.goal-card p {
+    margin: 0;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.commitment-values {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: center;
+}
+
+.commitment-values h4 {
+    margin-bottom: var(--space-20);
+    color: var(--color-text);
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-16);
+}
+
+.value-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+}
+
+.value-icon {
+    font-size: var(--font-size-3xl);
+}
+
+.value-item span:last-child {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+
+/* Slide 12 - Próximos Passos */
+.next-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-20);
+    margin-bottom: var(--space-32);
+}
+
+.step-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    display: flex;
+    gap: var(--space-16);
+    text-align: left;
+}
+
+.step-card.priority {
+    border-color: var(--color-primary);
+    background: var(--color-bg-1);
+}
+
+.step-number {
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    margin-bottom: var(--space-8);
+    color: var(--color-text);
+}
+
+.step-content p {
+    margin: 0;
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.cta-section {
+    background: var(--color-bg-3);
+    border: 1px solid var(--color-success);
+    border-radius: var(--radius-lg);
+    padding: var(--space-24);
+    text-align: center;
+}
+
+.cta-section h4 {
+    margin-bottom: var(--space-16);
+    color: var(--color-text);
+}
+
+.cta-section p {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
 }
 
 /* Navigation */
 .navigation {
-  position: fixed;
-  bottom: var(--space-32);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: var(--space-16);
-  z-index: 1000;
+    position: fixed;
+    bottom: var(--space-24);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-20);
+    background: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--radius-full);
+    padding: var(--space-12) var(--space-24);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
 }
 
 .nav-btn {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  border: none;
-  border-radius: var(--radius-full);
-  width: 60px;
-  height: 60px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-standard);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-lg);
+    background: var(--color-primary);
+    color: var(--color-btn-primary-text);
+    border: none;
+    padding: var(--space-8) var(--space-16);
+    border-radius: var(--radius-base);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-standard);
 }
 
 .nav-btn:hover {
-  background: var(--color-primary-hover);
-  transform: scale(1.1);
-}
-
-.nav-btn:active {
-  background: var(--color-primary-active);
-  transform: scale(0.95);
+    background: var(--color-primary-hover);
 }
 
 .nav-btn:disabled {
-  background: var(--color-secondary);
-  color: var(--color-text-secondary);
-  cursor: not-allowed;
-  transform: none;
-  opacity: 0.5;
+    background: var(--color-secondary);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+}
+
+.slide-counter {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    white-space: nowrap;
+}
+
+/* Progress Bar */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--color-secondary);
+    z-index: 1001;
+}
+
+.progress {
+    height: 100%;
+    background: var(--color-primary);
+    width: 8.33%;
+    transition: width var(--duration-normal) var(--ease-standard);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .slide {
-    padding: var(--space-16);
-  }
-  
-  .trends-grid,
-  .ia-benefits,
-  .departments-automation,
-  .success-cases,
-  .wellness-benefits,
-  .tech-categories,
-  .roi-metrics,
-  .action-steps {
-    grid-template-columns: 1fr;
-  }
-  
-  .research-results {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .timeline-phase {
-    flex-direction: column;
-    gap: var(--space-12);
-  }
-  
-  .phase-period {
-    align-self: flex-start;
-  }
-  
-  .success-formula {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .case-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .hero-icons {
-    gap: var(--space-16);
-  }
-  
-  .hero-icon {
-    font-size: 3rem;
-  }
+    .slide {
+        padding: var(--space-16);
+    }
+    
+    .slide-header h1 {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .slide-header h2 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .automation-grid,
+    .tools-grid,
+    .ergonomia-grid,
+    .benefits-overview,
+    .next-steps {
+        grid-template-columns: 1fr;
+    }
+    
+    .productivity-stats,
+    .roi-stats,
+    .case-studies {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .timeline-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .commitment-goals {
+        grid-template-columns: 1fr;
+    }
+    
+    .icon-container {
+        font-size: 60px;
+        gap: var(--space-20);
+    }
+    
+    .arrow {
+        font-size: 40px;
+    }
+    
+    .navigation {
+        flex-wrap: wrap;
+        gap: var(--space-12);
+    }
 }
 
 @media (max-width: 480px) {
-  .slide-counter {
-    top: var(--space-8);
-    right: var(--space-8);
-    font-size: var(--font-size-xs);
-    padding: var(--space-4) var(--space-8);
-  }
-  
-  .navigation {
-    bottom: var(--space-16);
-  }
-  
-  .nav-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
-  }
-  
-  .automation-list,
-  .tools-grid,
-  .solutions-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .benefit-number {
-    font-size: clamp(2.5rem, 8vw, 3.5rem);
-  }
-  
-  .roi-value {
-    font-size: clamp(2rem, 6vw, 3rem);
-  }
-}
-
-/* Print styles for handouts */
-@media print {
-  .progress-bar,
-  .slide-counter,
-  .navigation {
-    display: none;
-  }
-  
-  .slide {
-    position: static;
-    opacity: 1;
-    transform: none;
-    page-break-after: always;
-    height: auto;
-    padding: var(--space-16);
-  }
-  
-  .slide:last-child {
-    page-break-after: avoid;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .trend-card,
-  .benefit-card,
-  .case-card,
-  .wellness-card,
-  .roi-card,
-  .step-phase {
-    border-width: 3px;
-  }
-  
-  .formula-part,
-  .formula-result {
-    border: 2px solid var(--color-text);
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .hero-icon {
-    animation: none;
-  }
-  
-  .slide,
-  .trend-card,
-  .benefit-card,
-  .case-card,
-  .wellness-card,
-  .roi-card,
-  .step-phase,
-  .nav-btn {
-    transition: none;
-  }
-  
-  .progress-fill {
-    transition: none;
-  }
+    .slide {
+        padding: var(--space-12);
+    }
+    
+    .slide-header h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .slide-header h2 {
+        font-size: var(--font-size-xl);
+    }
+    
+    .stat-number,
+    .roi-number {
+        font-size: 36px;
+    }
+    
+    .icon-container {
+        font-size: 48px;
+        gap: var(--space-16);
+    }
 }

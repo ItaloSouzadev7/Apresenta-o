@@ -1,742 +1,376 @@
-class DigitalTransformationApp {
-    constructor() {
-        this.currentSlide = 1;
-        this.totalSlides = 11;
-        this.slides = document.querySelectorAll('.slide');
-        this.progressFill = document.querySelector('.progress-fill');
-        this.currentSlideElement = document.getElementById('current-slide');
-        this.totalSlidesElement = document.getElementById('total-slides');
-        this.prevBtn = document.getElementById('prevBtn');
-        this.nextBtn = document.getElementById('nextBtn');
-        
-        this.init();
+// Presentation JavaScript functionality
+
+let currentSlideIndex = 0;
+const totalSlides = 12;
+
+// Initialize presentation
+document.addEventListener('DOMContentLoaded', function() {
+    updateSlideDisplay();
+    updateProgressBar();
+    setupKeyboardNavigation();
+    
+    // Set initial slide counter
+    document.getElementById('totalSlides').textContent = totalSlides;
+});
+
+// Change slide function
+function changeSlide(direction) {
+    const slides = document.querySelectorAll('.slide');
+    const currentSlide = slides[currentSlideIndex];
+    
+    // Hide current slide
+    currentSlide.classList.remove('active');
+    
+    // Calculate new slide index
+    currentSlideIndex += direction;
+    
+    // Boundary checks
+    if (currentSlideIndex < 0) {
+        currentSlideIndex = 0;
     }
-
-    init() {
-        // Set initial state
-        this.updateSlideCounter();
-        this.updateProgressBar();
-        this.updateNavigationButtons();
-        
-        // Add event listeners
-        this.addEventListeners();
-        
-        // Show first slide
-        this.showSlide(1);
-        
-        // Initialize slide titles for accessibility
-        this.slideData = this.initializeSlideData();
+    if (currentSlideIndex >= totalSlides) {
+        currentSlideIndex = totalSlides - 1;
     }
+    
+    // Show new slide
+    const newSlide = slides[currentSlideIndex];
+    newSlide.classList.add('active');
+    
+    // Update UI
+    updateSlideDisplay();
+    updateProgressBar();
+    updateNavigationButtons();
+}
 
-    initializeSlideData() {
-        return [
-            {
-                title: 'Transformação Digital: I.A., Automação e Bem-Estar',
-                description: 'Apresentação sobre oportunidades de otimização'
-            },
-            {
-                title: 'Por que Agora?',
-                description: 'Tendências do mercado contábil brasileiro'
-            },
-            {
-                title: 'I.A. na Contabilidade',
-                description: 'Dados sobre automação e economia de custos'
-            },
-            {
-                title: 'Benefícios Científicos Comprovados',
-                description: 'Pesquisas sobre produtividade com múltiplas telas'
-            },
-            {
-                title: 'Oportunidades de Automação',
-                description: 'Processos que podem ser otimizados'
-            },
-            {
-                title: 'Cases de Sucesso',
-                description: 'Empresas brasileiras que cresceram com digitalização'
-            },
-            {
-                title: 'Ergonomia e Bem-Estar',
-                description: 'Importância para produtividade da equipe'
-            },
-            {
-                title: 'Soluções Tecnológicas',
-                description: 'Ferramentas de I.A. e automação disponíveis'
-            },
-            {
-                title: 'ROI Comprovado',
-                description: 'Retorno sobre investimento em digitalização'
-            },
-            {
-                title: 'Cronograma de Implementação',
-                description: 'Plano gradual baseado em best practices'
-            },
-            {
-                title: 'Próximos Passos',
-                description: 'Ações para começar a transformação'
-            }
-        ];
-    }
+// Update slide counter and navigation buttons
+function updateSlideDisplay() {
+    document.getElementById('currentSlide').textContent = currentSlideIndex + 1;
+    updateNavigationButtons();
+}
 
-    addEventListeners() {
-        // Navigation buttons - Fixed the direction issue
-        this.prevBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            this.goToPreviousSlide(); // Left arrow (‹) goes to previous
-        });
-        
-        this.nextBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            this.goToNextSlide(); // Right arrow (›) goes to next
-        });
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => this.handleKeyNavigation(e));
-        
-        // Touch/swipe support for mobile
-        this.addTouchSupport();
-        
-        // Click navigation (excluding interactive elements)
-        document.addEventListener('click', (e) => {
-            if (this.shouldHandleClick(e)) {
-                if (e.clientX > window.innerWidth / 2) {
-                    this.goToNextSlide();
-                } else {
-                    this.goToPreviousSlide();
-                }
-            }
-        });
+// Update progress bar
+function updateProgressBar() {
+    const progress = document.getElementById('progress');
+    const percentage = ((currentSlideIndex + 1) / totalSlides) * 100;
+    progress.style.width = percentage + '%';
+}
 
-        // Handle visibility change for performance
-        document.addEventListener('visibilitychange', () => {
-            this.handleVisibilityChange();
-        });
+// Update navigation button states
+function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    // Disable previous button on first slide
+    prevBtn.disabled = currentSlideIndex === 0;
+    
+    // Disable next button on last slide
+    nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+}
 
-        // Handle window resize
-        window.addEventListener('resize', this.debounce(() => {
-            this.handleResize();
-        }, 250));
-    }
-
-    shouldHandleClick(e) {
-        // Don't handle clicks on interactive elements
-        const interactiveSelectors = [
-            '.navigation', '.nav-btn', 'button', 'a', 
-            'input', 'textarea', 'select', '.tool-card'
-        ];
-        
-        return !interactiveSelectors.some(selector => 
-            e.target.closest(selector) || e.target.matches(selector)
-        );
-    }
-
-    addTouchSupport() {
-        let startX = 0;
-        let startY = 0;
-        let endX = 0;
-        let endY = 0;
-        let startTime = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            startTime = Date.now();
-        }, { passive: true });
-
-        document.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            endY = e.changedTouches[0].clientY;
-            const endTime = Date.now();
-            
-            this.handleSwipe(startX, startY, endX, endY, endTime - startTime);
-        }, { passive: true });
-    }
-
-    handleSwipe(startX, startY, endX, endY, duration) {
-        const deltaX = endX - startX;
-        const deltaY = endY - startY;
-        const minSwipeDistance = 50;
-        const maxSwipeTime = 500; // Maximum swipe time in ms
-
-        // Check if it's a valid swipe (horizontal, fast enough, long enough)
-        if (Math.abs(deltaX) > Math.abs(deltaY) && 
-            Math.abs(deltaX) > minSwipeDistance && 
-            duration < maxSwipeTime) {
-            
-            if (deltaX > 0) {
-                // Swipe right - go to previous slide
-                this.goToPreviousSlide();
-            } else {
-                // Swipe left - go to next slide
-                this.goToNextSlide();
-            }
-        }
-    }
-
-    handleKeyNavigation(e) {
-        // Prevent default behavior for presentation keys
-        const presentationKeys = [
-            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 
-            ' ', 'Home', 'End', 'f', 'F', 'r', 'R'
-        ];
-        
-        if (presentationKeys.includes(e.key)) {
-            e.preventDefault();
-        }
-
-        switch(e.key) {
-            case 'ArrowLeft':
-            case 'ArrowUp':
-                this.goToPreviousSlide();
-                break;
+// Keyboard navigation
+function setupKeyboardNavigation() {
+    document.addEventListener('keydown', function(event) {
+        switch(event.key) {
             case 'ArrowRight':
-            case 'ArrowDown':
-            case ' ': // Spacebar
-                this.goToNextSlide();
-                break;
-            case 'Home':
-                this.goToSlide(1);
-                break;
-            case 'End':
-                this.goToSlide(this.totalSlides);
-                break;
-            case 'r':
-            case 'R':
-                this.restart();
-                break;
-            case 'f':
-            case 'F':
-                this.toggleFullscreen();
-                break;
-            case 'Escape':
-                this.exitFullscreen();
-                break;
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                // Direct slide navigation with number keys
-                const slideNumber = parseInt(e.key);
-                if (slideNumber <= this.totalSlides) {
-                    this.goToSlide(slideNumber);
+            case ' ':
+            case 'PageDown':
+                event.preventDefault();
+                if (currentSlideIndex < totalSlides - 1) {
+                    changeSlide(1);
                 }
                 break;
-        }
-    }
-
-    goToNextSlide() {
-        if (this.currentSlide < this.totalSlides) {
-            this.goToSlide(this.currentSlide + 1);
-        } else {
-            // On last slide, restart presentation
-            this.restart();
-        }
-    }
-
-    goToPreviousSlide() {
-        if (this.currentSlide > 1) {
-            this.goToSlide(this.currentSlide - 1);
-        }
-    }
-
-    goToSlide(slideNumber) {
-        if (slideNumber < 1 || slideNumber > this.totalSlides || slideNumber === this.currentSlide) {
-            return;
-        }
-
-        // Hide current slide with animation
-        this.hideSlide(this.currentSlide);
-        
-        // Update current slide number
-        const previousSlide = this.currentSlide;
-        this.currentSlide = slideNumber;
-        
-        // Show new slide with animation
-        setTimeout(() => {
-            this.showSlide(this.currentSlide);
-        }, 100);
-        
-        // Update UI elements
-        this.updateSlideCounter();
-        this.updateProgressBar();
-        this.updateNavigationButtons();
-        
-        // Announce slide change for accessibility
-        this.announceSlideChange();
-        
-        // Track slide transitions for analytics (if needed)
-        this.trackSlideTransition(previousSlide, slideNumber);
-    }
-
-    showSlide(slideNumber) {
-        const slide = document.querySelector(`[data-slide="${slideNumber}"]`);
-        if (slide) {
-            slide.classList.add('active');
-            
-            // Trigger any slide-specific animations
-            this.triggerSlideAnimations(slide, slideNumber);
-        }
-    }
-
-    hideSlide(slideNumber) {
-        const slide = document.querySelector(`[data-slide="${slideNumber}"]`);
-        if (slide) {
-            slide.classList.remove('active');
-        }
-    }
-
-    triggerSlideAnimations(slide, slideNumber) {
-        // Add specific animations for certain slides
-        switch(slideNumber) {
-            case 1:
-                // Hero slide animations
-                this.animateHeroIcons(slide);
+                
+            case 'ArrowLeft':
+            case 'PageUp':
+                event.preventDefault();
+                if (currentSlideIndex > 0) {
+                    changeSlide(-1);
+                }
                 break;
-            case 3:
-                // I.A. benefits animation
-                this.animateBenefitNumbers(slide);
+                
+            case 'Home':
+                event.preventDefault();
+                goToSlide(0);
                 break;
-            case 4:
-                // Scientific data animation
-                this.animateScientificData(slide);
+                
+            case 'End':
+                event.preventDefault();
+                goToSlide(totalSlides - 1);
                 break;
-            case 9:
-                // ROI metrics animation
-                this.animateROIMetrics(slide);
+                
+            case 'Escape':
+                event.preventDefault();
+                toggleFullscreen();
                 break;
-        }
-    }
-
-    animateHeroIcons(slide) {
-        const icons = slide.querySelectorAll('.hero-icon');
-        icons.forEach((icon, index) => {
-            icon.style.opacity = '0';
-            icon.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                icon.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                icon.style.opacity = '0.9';
-                icon.style.transform = 'translateY(0)';
-            }, index * 200 + 500);
-        });
-    }
-
-    animateBenefitNumbers(slide) {
-        const numbers = slide.querySelectorAll('.benefit-number');
-        numbers.forEach((number, index) => {
-            const finalValue = number.textContent;
-            number.textContent = '0';
-            
-            setTimeout(() => {
-                this.animateNumber(number, finalValue);
-            }, index * 300 + 300);
-        });
-    }
-
-    animateScientificData(slide) {
-        const resultNumbers = slide.querySelectorAll('.result-number');
-        resultNumbers.forEach((number, index) => {
-            const finalValue = number.textContent;
-            number.style.opacity = '0';
-            
-            setTimeout(() => {
-                number.style.transition = 'opacity 0.8s ease';
-                number.style.opacity = '1';
-                this.animateNumber(number, finalValue);
-            }, index * 400 + 600);
-        });
-    }
-
-    animateROIMetrics(slide) {
-        const roiValues = slide.querySelectorAll('.roi-value');
-        roiValues.forEach((value, index) => {
-            const finalValue = value.textContent;
-            value.style.transform = 'scale(0)';
-            
-            setTimeout(() => {
-                value.style.transition = 'transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-                value.style.transform = 'scale(1)';
-                this.animateNumber(value, finalValue);
-            }, index * 250 + 400);
-        });
-    }
-
-    animateNumber(element, finalValue) {
-        const isPercentage = finalValue.includes('%');
-        const isHours = finalValue.includes('h');
-        const numericValue = parseFloat(finalValue);
-        
-        if (isNaN(numericValue)) {
-            element.textContent = finalValue;
-            return;
-        }
-
-        let currentValue = 0;
-        const increment = numericValue / 30; // 30 steps for smooth animation
-        const duration = 1500; // 1.5 seconds
-        const stepTime = duration / 30;
-
-        const timer = setInterval(() => {
-            currentValue += increment;
-            if (currentValue >= numericValue) {
-                currentValue = numericValue;
-                clearInterval(timer);
-            }
-            
-            let displayValue = Math.round(currentValue);
-            if (isPercentage) {
-                element.textContent = displayValue + '%';
-            } else if (isHours) {
-                element.textContent = displayValue + 'h';
-            } else {
-                element.textContent = displayValue.toString();
-            }
-        }, stepTime);
-    }
-
-    updateSlideCounter() {
-        if (this.currentSlideElement && this.totalSlidesElement) {
-            this.currentSlideElement.textContent = this.currentSlide;
-            this.totalSlidesElement.textContent = this.totalSlides;
-        }
-    }
-
-    updateProgressBar() {
-        if (this.progressFill) {
-            const progressPercentage = (this.currentSlide / this.totalSlides) * 100;
-            this.progressFill.style.width = `${progressPercentage}%`;
-        }
-    }
-
-    updateNavigationButtons() {
-        if (!this.prevBtn || !this.nextBtn) return;
-        
-        // Update previous button
-        this.prevBtn.disabled = this.currentSlide === 1;
-        this.prevBtn.title = this.currentSlide === 1 ? 
-            'Slide anterior (não disponível)' : 'Slide anterior';
-        
-        // Update next button
-        this.nextBtn.disabled = false;
-        
-        if (this.currentSlide === this.totalSlides) {
-            this.nextBtn.innerHTML = '🔄';
-            this.nextBtn.title = 'Reiniciar apresentação';
-        } else {
-            this.nextBtn.innerHTML = '›';
-            this.nextBtn.title = 'Próximo slide';
-        }
-    }
-
-    announceSlideChange() {
-        // Create or update live region for screen readers
-        let liveRegion = document.getElementById('slide-announcement');
-        if (!liveRegion) {
-            liveRegion = document.createElement('div');
-            liveRegion.id = 'slide-announcement';
-            liveRegion.className = 'sr-only';
-            liveRegion.setAttribute('aria-live', 'polite');
-            liveRegion.setAttribute('aria-atomic', 'true');
-            document.body.appendChild(liveRegion);
-        }
-        
-        const slideInfo = this.slideData[this.currentSlide - 1];
-        liveRegion.textContent = `Slide ${this.currentSlide} de ${this.totalSlides}: ${slideInfo.title}. ${slideInfo.description}`;
-    }
-
-    trackSlideTransition(from, to) {
-        // Log slide transitions for potential analytics
-        console.log(`Transição: Slide ${from} → Slide ${to}`);
-        
-        // You could integrate with analytics services here
-        // Example: gtag('event', 'slide_view', { slide_number: to });
-    }
-
-    handleVisibilityChange() {
-        if (document.hidden) {
-            console.log('⏸️ Apresentação pausada (aba inativa)');
-        } else {
-            console.log('▶️ Apresentação retomada');
-        }
-    }
-
-    handleResize() {
-        // Handle responsive updates if needed
-        console.log(`📱 Redimensionamento detectado no slide ${this.currentSlide}`);
-        
-        // Trigger re-layout for current slide animations if needed
-        const currentSlideElement = document.querySelector(`[data-slide="${this.currentSlide}"]`);
-        if (currentSlideElement && currentSlideElement.classList.contains('active')) {
-            // Force re-render of any responsive elements
-            this.triggerSlideAnimations(currentSlideElement, this.currentSlide);
-        }
-    }
-
-    // Public API methods
-    getCurrentSlide() {
-        return this.currentSlide;
-    }
-
-    getTotalSlides() {
-        return this.totalSlides;
-    }
-
-    getCurrentSlideData() {
-        return this.slideData[this.currentSlide - 1];
-    }
-
-    restart() {
-        this.goToSlide(1);
-        console.log('🔄 Apresentação reiniciada');
-    }
-
-    toggleFullscreen() {
-        if (document.fullscreenElement) {
-            this.exitFullscreen();
-        } else {
-            this.enterFullscreen();
-        }
-    }
-
-    enterFullscreen() {
-        const element = document.documentElement;
-        
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-        }
-    }
-
-    exitFullscreen() {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
-
-    // Utility methods
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    // Export current slide as data (for potential integrations)
-    exportSlideData() {
-        return {
-            currentSlide: this.currentSlide,
-            totalSlides: this.totalSlides,
-            slideData: this.getCurrentSlideData(),
-            timestamp: new Date().toISOString()
-        };
-    }
-}
-
-// Performance and Animation Utilities
-class PresentationUtils {
-    static smoothScrollToElement(element, duration = 1000) {
-        const start = window.pageYOffset;
-        const target = element.getBoundingClientRect().top + start;
-        const startTime = Date.now();
-
-        function animateScroll() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeProgress = PresentationUtils.easeInOutCubic(progress);
-            
-            window.scrollTo(0, start + (target - start) * easeProgress);
-            
-            if (progress < 1) {
-                requestAnimationFrame(animateScroll);
-            }
-        }
-        
-        requestAnimationFrame(animateScroll);
-    }
-
-    static easeInOutCubic(t) {
-        return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-    }
-
-    static preloadSlideAssets() {
-        // Preload any heavy assets for smooth transitions
-        const images = document.querySelectorAll('img[data-src]');
-        images.forEach(img => {
-            const src = img.getAttribute('data-src');
-            if (src) {
-                const newImg = new Image();
-                newImg.src = src;
-            }
-        });
-    }
-
-    static detectFeatures() {
-        return {
-            fullscreen: !!(
-                document.fullscreenEnabled || 
-                document.mozFullScreenEnabled || 
-                document.webkitFullscreenEnabled || 
-                document.msFullscreenEnabled
-            ),
-            touch: 'ontouchstart' in window,
-            webGL: !!window.WebGLRenderingContext,
-            localStorage: !!window.localStorage,
-            serviceWorker: 'serviceWorker' in navigator
-        };
-    }
-}
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
-    // Feature detection
-    const features = PresentationUtils.detectFeatures();
-    
-    // Initialize the main application
-    window.digitalTransformationApp = new DigitalTransformationApp();
-    
-    // Preload assets for better performance
-    PresentationUtils.preloadSlideAssets();
-    
-    // Setup performance monitoring
-    if ('performance' in window) {
-        window.addEventListener('load', () => {
-            const loadTime = performance.now();
-            console.log(`⚡ Apresentação carregada em ${Math.round(loadTime)}ms`);
-        });
-    }
-    
-    // Log initialization
-    console.log('🚀 Transformação Digital: I.A., Automação e Bem-Estar');
-    console.log('');
-    console.log('📋 CONTROLES DISPONÍVEIS:');
-    console.log('  • Setas ←/→ ou ↑/↓: Navegar entre slides');
-    console.log('  • Espaço: Próximo slide');
-    console.log('  • Números 1-9: Ir diretamente para o slide');
-    console.log('  • Home: Primeiro slide');
-    console.log('  • End: Último slide');
-    console.log('  • R: Reiniciar apresentação');
-    console.log('  • F: Alternar tela cheia');
-    console.log('  • Escape: Sair da tela cheia');
-    console.log('  • Clique na metade direita/esquerda da tela: Navegar');
-    console.log('  • Gestos de deslizar em dispositivos touch');
-    console.log('');
-    
-    // Feature availability log
-    console.log('🔧 RECURSOS DISPONÍVEIS:');
-    console.log(`  • Tela cheia: ${features.fullscreen ? '✅' : '❌'}`);
-    console.log(`  • Touch: ${features.touch ? '✅' : '❌'}`);
-    console.log(`  • WebGL: ${features.webGL ? '✅' : '❌'}`);
-    console.log(`  • Local Storage: ${features.localStorage ? '✅' : '❌'}`);
-    console.log('');
-    
-    // Check for required elements
-    const requiredElements = [
-        { selector: '#prevBtn', name: 'Botão anterior' },
-        { selector: '#nextBtn', name: 'Botão próximo' },
-        { selector: '#current-slide', name: 'Contador de slide atual' },
-        { selector: '#total-slides', name: 'Contador total de slides' },
-        { selector: '.progress-fill', name: 'Barra de progresso' },
-        { selector: '.slide', name: 'Slides' }
-    ];
-    
-    let missingElements = [];
-    requiredElements.forEach(element => {
-        if (!document.querySelector(element.selector)) {
-            console.error(`❌ ${element.name} não encontrado: ${element.selector}`);
-            missingElements.push(element.name);
         }
     });
+}
+
+// Go to specific slide
+function goToSlide(slideIndex) {
+    const slides = document.querySelectorAll('.slide');
+    const currentSlide = slides[currentSlideIndex];
     
-    if (missingElements.length === 0) {
-        console.log('✅ Todos os elementos necessários carregados corretamente');
+    if (slideIndex >= 0 && slideIndex < totalSlides && slideIndex !== currentSlideIndex) {
+        // Hide current slide
+        currentSlide.classList.remove('active');
+        
+        // Update index
+        currentSlideIndex = slideIndex;
+        
+        // Show new slide
+        const newSlide = slides[currentSlideIndex];
+        newSlide.classList.add('active');
+        
+        // Update UI
+        updateSlideDisplay();
+        updateProgressBar();
+        updateNavigationButtons();
+    }
+}
+
+// Toggle fullscreen mode
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log('Error attempting to enable fullscreen:', err);
+        });
     } else {
-        console.warn(`⚠️ ${missingElements.length} elemento(s) não encontrado(s)`);
+        document.exitFullscreen();
     }
+}
+
+// Touch/swipe support for mobile devices
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', function(event) {
+    touchStartX = event.changedTouches[0].screenX;
+}, false);
+
+document.addEventListener('touchend', function(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    handleSwipe();
+}, false);
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const swipeDistance = touchEndX - touchStartX;
     
-    // Prevent context menu and text selection during presentation
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
-    
-    document.addEventListener('selectstart', (e) => {
-        if (!e.target.closest('input, textarea')) {
-            e.preventDefault();
+    if (Math.abs(swipeDistance) > swipeThreshold) {
+        if (swipeDistance > 0) {
+            // Swipe right - go to previous slide
+            if (currentSlideIndex > 0) {
+                changeSlide(-1);
+            }
+        } else {
+            // Swipe left - go to next slide
+            if (currentSlideIndex < totalSlides - 1) {
+                changeSlide(1);
+            }
         }
+    }
+}
+
+// Auto-hide navigation after inactivity (optional feature)
+let navigationTimeout;
+const navigationElement = document.querySelector('.navigation');
+
+function resetNavigationTimeout() {
+    clearTimeout(navigationTimeout);
+    navigationElement.style.opacity = '1';
+    
+    navigationTimeout = setTimeout(() => {
+        navigationElement.style.opacity = '0.3';
+    }, 3000); // Hide after 3 seconds of inactivity
+}
+
+// Track mouse movement to show/hide navigation
+document.addEventListener('mousemove', resetNavigationTimeout);
+document.addEventListener('touchstart', resetNavigationTimeout);
+
+// Initialize navigation timeout
+resetNavigationTimeout();
+
+// Handle visibility change (when tab becomes active/inactive)
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+        // Pause any animations or timers when tab is hidden
+        console.log('Presentation paused');
+    } else {
+        // Resume when tab becomes active
+        console.log('Presentation resumed');
+        resetNavigationTimeout();
+    }
+});
+
+// Print presentation functionality
+function printPresentation() {
+    // Show all slides for printing
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach(slide => {
+        slide.style.display = 'block';
+        slide.style.pageBreakAfter = 'always';
+        slide.style.height = 'auto';
+        slide.style.minHeight = '100vh';
     });
     
-    // Add visual feedback for navigation buttons
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('mousedown', function() {
-            this.style.transform = 'scale(0.95)';
-        });
-        
-        btn.addEventListener('mouseup', function() {
-            this.style.transform = '';
-        });
-        
-        btn.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-        });
-    });
+    // Hide navigation for printing
+    const navigation = document.querySelector('.navigation');
+    const progressBar = document.querySelector('.progress-bar');
+    navigation.style.display = 'none';
+    progressBar.style.display = 'none';
     
-    // Setup fullscreen change handlers
-    ['fullscreenchange', 'mozfullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange'].forEach(event => {
-        document.addEventListener(event, () => {
-            if (document.fullscreenElement || 
-                document.mozFullScreenElement || 
-                document.webkitFullscreenElement || 
-                document.msFullscreenElement) {
-                console.log('🖥️ Modo tela cheia ativado');
-            } else {
-                console.log('🔍 Modo tela cheia desativado');
+    // Trigger print
+    window.print();
+    
+    // Restore normal display after printing
+    setTimeout(() => {
+        slides.forEach((slide, index) => {
+            slide.style.display = index === currentSlideIndex ? 'flex' : 'none';
+            slide.style.pageBreakAfter = 'auto';
+            slide.style.height = '100vh';
+            slide.style.minHeight = 'auto';
+        });
+        
+        navigation.style.display = 'flex';
+        progressBar.style.display = 'block';
+    }, 1000);
+}
+
+// Keyboard shortcut for printing (Ctrl+P or Cmd+P)
+document.addEventListener('keydown', function(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+        event.preventDefault();
+        printPresentation();
+    }
+});
+
+// Presentation timer functionality
+let presentationStartTime = null;
+let timerInterval = null;
+
+function startPresentationTimer() {
+    presentationStartTime = new Date();
+    updateTimer();
+    
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    if (!presentationStartTime) return;
+    
+    const now = new Date();
+    const elapsed = Math.floor((now - presentationStartTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    
+    const timerDisplay = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    // You can display this timer somewhere if needed
+    console.log('Presentation time:', timerDisplay);
+}
+
+function stopPresentationTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        presentationStartTime = null;
+    }
+}
+
+// Start timer when presentation begins
+document.addEventListener('DOMContentLoaded', function() {
+    startPresentationTimer();
+});
+
+// Slide transition animations
+function addSlideTransitionEffects() {
+    const slides = document.querySelectorAll('.slide');
+    
+    slides.forEach(slide => {
+        slide.addEventListener('transitionend', function(event) {
+            if (event.propertyName === 'opacity' && slide.classList.contains('active')) {
+                // Slide has finished appearing
+                animateSlideContent(slide);
             }
         });
     });
+}
+
+function animateSlideContent(slide) {
+    const animatableElements = slide.querySelectorAll(
+        '.automation-item, .opportunity-card, .stat-card, .case-card, .tool-category, .ergonomia-card, .roi-card, .timeline-item, .benefit-pillar, .goal-card, .step-card'
+    );
     
-    // Add keyboard shortcut hint to console
-    setTimeout(() => {
-        console.log('💡 DICA: Pressione F para tela cheia, R para reiniciar, ou use as setas para navegar!');
-    }, 2000);
-});
-
-// Global error handling for presentation
-window.addEventListener('error', (e) => {
-    console.error('❌ Erro na apresentação:', e.message);
-    // You could implement error reporting here
-});
-
-// Service Worker registration for offline capability (optional)
-if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-    navigator.serviceWorker.register('/sw.js').then(() => {
-        console.log('📱 Service Worker registrado para uso offline');
-    }).catch(() => {
-        console.log('📱 Service Worker não disponível');
+    animatableElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            element.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }, index * 100);
     });
 }
 
-// Export for potential external use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { DigitalTransformationApp, PresentationUtils };
+// Initialize slide transitions
+document.addEventListener('DOMContentLoaded', function() {
+    addSlideTransitionEffects();
+});
+
+// Accessibility improvements
+function improveAccessibility() {
+    // Add ARIA labels to navigation buttons
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    prevBtn.setAttribute('aria-label', 'Slide anterior');
+    nextBtn.setAttribute('aria-label', 'Próximo slide');
+    
+    // Add slide descriptions for screen readers
+    const slides = document.querySelectorAll('.slide');
+    slides.forEach((slide, index) => {
+        slide.setAttribute('aria-label', `Slide ${index + 1} de ${totalSlides}`);
+        slide.setAttribute('role', 'img');
+    });
+    
+    // Announce slide changes to screen readers
+    const announceSlideChange = () => {
+        const announcement = `Slide ${currentSlideIndex + 1} de ${totalSlides}`;
+        const announcer = document.createElement('div');
+        announcer.setAttribute('aria-live', 'polite');
+        announcer.setAttribute('aria-atomic', 'true');
+        announcer.className = 'sr-only';
+        announcer.textContent = announcement;
+        
+        document.body.appendChild(announcer);
+        
+        setTimeout(() => {
+            document.body.removeChild(announcer);
+        }, 1000);
+    };
+    
+    // Override changeSlide to include announcements
+    const originalChangeSlide = window.changeSlide;
+    window.changeSlide = function(direction) {
+        originalChangeSlide(direction);
+        announceSlideChange();
+    };
 }
+
+// Initialize accessibility features
+document.addEventListener('DOMContentLoaded', function() {
+    improveAccessibility();
+});
+
+// Export functions for potential external use
+window.presentationControls = {
+    goToSlide: goToSlide,
+    changeSlide: changeSlide,
+    toggleFullscreen: toggleFullscreen,
+    printPresentation: printPresentation,
+    getCurrentSlide: () => currentSlideIndex,
+    getTotalSlides: () => totalSlides
+};
